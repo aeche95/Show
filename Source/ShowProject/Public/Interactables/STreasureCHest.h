@@ -1,0 +1,41 @@
+// Copyright to Andres Echeverri 2023
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "GameFramework/Actor.h"
+#include "Interfaces/SInteractionInterface.h"
+#include "STreasureCHest.generated.h"
+
+class UStaticMeshComponent;
+
+UCLASS()
+class SHOWPROJECT_API ASTreasureCHest : public AActor, public ISInteractionInterface
+{
+	GENERATED_BODY()
+	
+public:	
+	// Sets default values for this actor's properties
+	ASTreasureCHest();
+
+	UPROPERTY(EditAnywhere)
+	float TargetPitch;
+
+protected:
+
+	UPROPERTY(EditAnywhere)
+	UStaticMeshComponent* Base;
+
+	UPROPERTY(EditAnywhere)
+	UStaticMeshComponent* Lid;
+
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+public:	
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
+	void Interaction_Implementation(APawn* InstigatorPawn);
+
+};
