@@ -12,9 +12,11 @@ class SHOWPROJECT_API USInteractionComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
 	// Sets default values for this component's properties
 	USInteractionComponent();
+
+	void PrimaryInteract();
 
 protected:
 	// Called when the game starts

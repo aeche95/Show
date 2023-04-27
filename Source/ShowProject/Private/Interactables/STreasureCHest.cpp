@@ -1,11 +1,11 @@
 // Copyright to Andres Echeverri 2023
 
 
-#include "Interactables/STreasureCHest.h"
+#include "Interactables/STreasureChest.h"
 #include "Components/StaticMeshComponent.h"
 
 // Sets default values
-ASTreasureCHest::ASTreasureCHest()
+ASTreasureChest::ASTreasureChest()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -20,20 +20,20 @@ ASTreasureCHest::ASTreasureCHest()
 }
 
 // Called when the game starts or when spawned
-void ASTreasureCHest::BeginPlay()
+void ASTreasureChest::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
 // Called every frame
-void ASTreasureCHest::Tick(float DeltaTime)
+void ASTreasureChest::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 }
 
-void ASTreasureCHest::Interaction_Implementation(APawn* InstigatorPawn)
+void ASTreasureChest::Interaction_Implementation(APawn* InstigatorPawn)
 {
 	Lid->SetRelativeRotation(FRotator(TargetPitch, 0, 0));
 }

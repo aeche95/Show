@@ -11,6 +11,8 @@ class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
+class USInteractionComponent;
+class UAnimMontage;
 
 UCLASS()
 class SHOWPROJECT_API ASCharacter : public ACharacter
@@ -29,21 +31,26 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* Camera;
 
+	UPROPERTY(VisibleAnywhere)
+	USInteractionComponent* Interaction;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-	UInputAction* MoveAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-	UInputAction* LookAction;
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TMap<FString, UInputAction*> InputActions;
 
 	void Move(const FInputActionValue& ActionValue);
 
 	void Look(const FInputActionValue& ActionValue);
+
+	void Interact();
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attack")
 	TSubclassOf<AActor> ProjectileClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attack")
+	UAnimMontage* AttackAnim;
 
 	void PrimaryAttack();
 

@@ -2,6 +2,7 @@
 
 
 #include "Components/SInteractionComponent.h"
+#include "Interfaces/SInteractionInterface.h"
 
 // Sets default values for this component's properties
 USInteractionComponent::USInteractionComponent()
@@ -11,6 +12,47 @@ USInteractionComponent::USInteractionComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	// ...
+}
+
+void USInteractionComponent::PrimaryInteract()
+{
+	FCollisionObjectQueryParams Params;
+	Params.AddObjectTypesToQuery(ECC_WorldDynamic);
+
+	AActor* Owner = GetOwner();
+	
+
+	FVector EyeLocation;
+	FRotator EyeRotation;
+	Owner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
+
+	FVector End = EyeLocation + EyeRotation.Vector() * 1000;
+	
+	/*FHitResult OutHit;
+
+	GetWorld()->LineTraceSingleByObjectType(OutHit, EyeLocation, End, Params);*/
+
+	TArray<FHitResult> Hits;
+
+	FCollisionShape Shape;
+	Shape.MakeSphere(30.f);
+
+	bool bBlockingHit = GetWorld()->SweepMultiByObjectType(Hits, EyeLocation, End, FQuat::Identity, Params, Shape);
+	for (FHitResult Hit : Hits)
+	{
+		AActor* HitActor = Hit.GetActor();
+		if(HitActor)
+		{
+			if (HitActor->Implements<USInteractionInterface>())
+			{
+				APawn* MyPawn = Cast<APawn>(Owner);
+			
+				ISInteractionInterface::Execute_Interact(HitActor, MyPawn);
+				break;
+			}
+		}
+
+	}
 }
 
 

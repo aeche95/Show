@@ -5,6 +5,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "EnhancedInputComponent.h"
+#include "Components/SInteractionComponent.h"
 
 // Sets default values
 ASCharacter::ASCharacter()
@@ -19,10 +20,10 @@ ASCharacter::ASCharacter()
 	Camera = CreateDefaultSubobject<UCameraComponent>("Camera");
 	Camera->SetupAttachment(SpringArm);
 
+	Interaction = CreateDefaultSubobject<USInteractionComponent>(TEXT("Interaction"));
+
 	bUseControllerRotationYaw = false;
 
-	LookAction = nullptr;
-	MoveAction = nullptr;
 }
 
 // Called when the game starts or when spawned
@@ -62,7 +63,7 @@ void ASCharacter::Look(const FInputActionValue& ActionValue)
 {
 	const FVector2D LookValue = ActionValue.Get<FVector2D>();
 
-	UE_LOG(LogTemp, Log, TEXT("Look value: %s"), *LookValue.ToString());
+	//UE_LOG(LogTemp, Log, TEXT("Look value: %s"), *LookValue.ToString());
 
 	if (LookValue.X != 0.f)
 	{
@@ -72,6 +73,14 @@ void ASCharacter::Look(const FInputActionValue& ActionValue)
 	if (LookValue.Y != 0.f)
 	{
 		AddControllerPitchInput(LookValue.Y);
+	}
+}
+
+void ASCharacter::Interact()
+{
+	if (Interaction)
+	{
+		Interaction->PrimaryInteract();
 	}
 }
 
@@ -93,13 +102,18 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 	if (EnhancedInput)
 	{
-		EnhancedInput->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ASCharacter::Move);
-		EnhancedInput->BindAction(LookAction, ETriggerEvent::Triggered, this, &ASCharacter::Look);
+		EnhancedInput->BindAction(InputActions["Move"], ETriggerEvent::Triggered, this, &ASCharacter::Move);
+		EnhancedInput->BindAction(InputActions["Look"], ETriggerEvent::Triggered, this, &ASCharacter::Look);
+		EnhancedInput->BindAction(InputActions["Interact"], ETriggerEvent::Triggered, this, &ASCharacter::Interact);
+		EnhancedInput->BindAction(InputActions["Jump"], ETriggerEvent::Triggered, this, &ACharacter::Jump);
+
 	}
 }
 
 void ASCharacter::PrimaryAttack()
 {
+	PlayAnimMontage(AttackAnim);
+
 	FVector Location = GetMesh()->GetSocketLocation("Muzzle_01");
 
 	FTransform SpawnTransform = FTransform(GetControlRotation(), Location);

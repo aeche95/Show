@@ -11,9 +11,17 @@ ASExplosiveBarrel::ASExplosiveBarrel()
 	PrimaryActorTick.bCanEverTick = true;
 	
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	Mesh->SetSimulatePhysics(true);
 	RootComponent = Mesh;
 
 	ForceComponent = CreateDefaultSubobject<URadialForceComponent>(TEXT("Force Component"));
+	ForceComponent->SetupAttachment(RootComponent);
+	ForceComponent->SetAutoActivate(false);
+	ForceComponent->Radius = 750.f;
+	ForceComponent->ImpulseStrength = 2500.f;
+	ForceComponent->bImpulseVelChange = true;
+	ForceComponent->AddCollisionChannelToAffect(ECC_WorldDynamic);
+
 }
 
 // Called when the game starts or when spawned
@@ -21,6 +29,17 @@ void ASExplosiveBarrel::BeginPlay()
 {
 	Super::BeginPlay();
 	
+}
+
+void ASExplosiveBarrel::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	Mesh->OnComponentHit.AddDynamic(this, &ASExplosiveBarrel::OnActorHit);
+}
+
+void ASExplosiveBarrel::OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	ForceComponent->FireImpulse();
 }
 
 // Called every frame

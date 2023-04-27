@@ -5,18 +5,18 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Interfaces/SInteractionInterface.h"
-#include "STreasureCHest.generated.h"
+#include "STreasureChest.generated.h"
 
 class UStaticMeshComponent;
 
 UCLASS()
-class SHOWPROJECT_API ASTreasureCHest : public AActor, public ISInteractionInterface
+class SHOWPROJECT_API ASTreasureChest : public AActor, public ISInteractionInterface
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ASTreasureCHest();
+	ASTreasureChest();
 
 	UPROPERTY(EditAnywhere)
 	float TargetPitch;
