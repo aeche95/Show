@@ -12,6 +12,7 @@ class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
 class USInteractionComponent;
+class USAttributeComponent;
 class UAnimMontage;
 
 UCLASS()
@@ -33,6 +34,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	USInteractionComponent* Interaction;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	USAttributeComponent* Attributes;
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

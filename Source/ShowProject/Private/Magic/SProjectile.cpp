@@ -5,11 +5,12 @@
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "Components/SAttributeComponent.h"
 
 // Sets default values
 ASProjectile::ASProjectile()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	Sphere = CreateDefaultSubobject<USphereComponent>("Sphere");
@@ -18,6 +19,7 @@ ASProjectile::ASProjectile()
 	Sphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 	Sphere->SetCollisionObjectType(ECC_WorldDynamic);*/
 	Sphere->SetCollisionProfileName("Projectile");
+	Sphere->OnComponentBeginOverlap.AddDynamic(this, &ASProjectile::OnActorOverlap);
 
 	ParticleSystem = CreateDefaultSubobject<UParticleSystemComponent>("Particle System");
 	ParticleSystem->SetupAttachment(RootComponent);
@@ -26,14 +28,15 @@ ASProjectile::ASProjectile()
 	ProjectileMovement->InitialSpeed = 1000.f;
 	ProjectileMovement->bRotationFollowsVelocity = true;
 	ProjectileMovement->bInitialVelocityInLocalSpace = true;
-
 }
 
-// Called when the game starts or when spawned
-void ASProjectile::BeginPlay()
+void ASProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	Super::BeginPlay();
-	
+	if (OtherActor && OtherActor != GetInstigator())
+	{
+		USAttributeComponent* AttributeComp = Cast<USAttributeComponent>(OtherActor->GetComponentByClass(USAttributeComponent::StaticClass()));
+		AttributeComp->ApplyHealthChange(20.f);
+	}
 }
 
 // Called every frame

@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 #include "EnhancedInputComponent.h"
 #include "Components/SInteractionComponent.h"
+#include "Components/SAttributeComponent.h"
 
 // Sets default values
 ASCharacter::ASCharacter()
@@ -21,6 +22,8 @@ ASCharacter::ASCharacter()
 	Camera->SetupAttachment(SpringArm);
 
 	Interaction = CreateDefaultSubobject<USInteractionComponent>(TEXT("Interaction"));
+
+	Attributes = CreateDefaultSubobject<USAttributeComponent>(TEXT("Attributes"));
 
 	bUseControllerRotationYaw = false;
 
@@ -106,12 +109,13 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 		EnhancedInput->BindAction(InputActions["Look"], ETriggerEvent::Triggered, this, &ASCharacter::Look);
 		EnhancedInput->BindAction(InputActions["Interact"], ETriggerEvent::Triggered, this, &ASCharacter::Interact);
 		EnhancedInput->BindAction(InputActions["Jump"], ETriggerEvent::Triggered, this, &ACharacter::Jump);
-
+		EnhancedInput->BindAction(InputActions["Attack"], ETriggerEvent::Triggered, this, &ASCharacter::PrimaryAttack);
 	}
 }
 
 void ASCharacter::PrimaryAttack()
 {
+	ensure(ProjectileClass);
 	PlayAnimMontage(AttackAnim);
 
 	FVector Location = GetMesh()->GetSocketLocation("Muzzle_01");
