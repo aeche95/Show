@@ -90,6 +90,7 @@ Plugins/
 Builds/
 
 # Extra content
-Content/CourseContent_Full_v2/*
+Content/ExampleContent/*
+Content/Paragon*/
 
 

@@ -109,7 +109,7 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 		EnhancedInput->BindAction(InputActions["Look"], ETriggerEvent::Triggered, this, &ASCharacter::Look);
 		EnhancedInput->BindAction(InputActions["Interact"], ETriggerEvent::Triggered, this, &ASCharacter::Interact);
 		EnhancedInput->BindAction(InputActions["Jump"], ETriggerEvent::Triggered, this, &ACharacter::Jump);
-		EnhancedInput->BindAction(InputActions["Attack"], ETriggerEvent::Triggered, this, &ASCharacter::PrimaryAttack);
+		EnhancedInput->BindAction(InputActions["Attack"], ETriggerEvent::Started, this, &ASCharacter::PrimaryAttack);
 	}
 }
 
@@ -124,6 +124,7 @@ void ASCharacter::PrimaryAttack()
 
 	FActorSpawnParameters Params;
 	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	Params.Instigator = this;
 
 	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTransform,Params);
 }
