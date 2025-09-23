@@ -7,6 +7,7 @@
 #include "SPlayerController.generated.h"
 
 class UInputMappingContext;
+class USAttributeComponent;
 
 /**
  * Player controller class, to handle input
@@ -16,10 +17,17 @@ class SHOWPROJECT_API ASPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
+public:
+
+	ASPlayerController();
+
 protected:
 
 	UPROPERTY(EditDefaultsOnly, meta=(AllowBlueprintPrivateAccess="true"))
-	UInputMappingContext* BaseMappingContext;
+	TObjectPtr<UInputMappingContext> BaseMappingContext;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<USAttributeComponent> Attributes;
 
 	virtual void SetupInputComponent() override;
 	

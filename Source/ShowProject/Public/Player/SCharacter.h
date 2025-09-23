@@ -12,7 +12,6 @@ class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
 class USInteractionComponent;
-class USAttributeComponent;
 class UAnimMontage;
 
 UCLASS()
@@ -27,16 +26,13 @@ public:
 protected:
 
 	UPROPERTY(VisibleAnywhere)
-	USpringArmComponent* SpringArm;
+	TObjectPtr<USpringArmComponent> SpringArm;
 
 	UPROPERTY(VisibleAnywhere)
-	UCameraComponent* Camera;
+	TObjectPtr<UCameraComponent> Camera;
 
 	UPROPERTY(VisibleAnywhere)
-	USInteractionComponent* Interaction;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	USAttributeComponent* Attributes;
+	TObjectPtr<USInteractionComponent> Interaction;
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -54,9 +50,21 @@ protected:
 	TSubclassOf<AActor> ProjectileClass;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attack")
+	TSubclassOf<AActor> DashProjectileClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attack")
+	TSubclassOf<AActor> BlackHoleProjectileClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attack")
 	UAnimMontage* AttackAnim;
 
+	FTimerHandle TimerHandle_PrimaryAttack;
+
 	void PrimaryAttack();
+
+	void PrimaryAttack_TimerElapsed();
+
+	void SpawnProjectile(TSubclassOf<AActor> ClassToSpawn);
 
 public:	
 	// Called every frame

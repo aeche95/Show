@@ -9,8 +9,9 @@
 class USphereComponent;
 class UProjectileMovementComponent;
 class UParticleSystemComponent;
+class UParticleSystem;
 
-UCLASS()
+UCLASS(Abstract)
 class SHOWPROJECT_API ASProjectile : public AActor
 {
 	GENERATED_BODY()
@@ -22,17 +23,22 @@ public:
 protected:
 
 	UPROPERTY(VisibleAnywhere)
-	USphereComponent* Sphere;
+	TObjectPtr<USphereComponent> Sphere;
 
 	UPROPERTY(VisibleAnywhere)
-	UProjectileMovementComponent* ProjectileMovement;
+	TObjectPtr<UProjectileMovementComponent> ProjectileMovement;
 
 	UPROPERTY(VisibleAnywhere)
-	UParticleSystemComponent* ParticleSystem;
+	TObjectPtr<UParticleSystemComponent> ParticleSystem;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr <UParticleSystem> ParticleVFX;
 
 	UFUNCTION()
-	void OnActorOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	virtual void OnActorOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void Explode();
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

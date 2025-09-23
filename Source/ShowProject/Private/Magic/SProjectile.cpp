@@ -6,6 +6,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Components/SAttributeComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ASProjectile::ASProjectile()
@@ -15,9 +16,6 @@ ASProjectile::ASProjectile()
 
 	Sphere = CreateDefaultSubobject<USphereComponent>("Sphere");
 	RootComponent = Sphere;
-	/*Sphere->SetCollisionResponseToAllChannels(ECR_Ignore);
-	Sphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
-	Sphere->SetCollisionObjectType(ECC_WorldDynamic);*/
 	Sphere->SetCollisionProfileName("Projectile");
 	Sphere->OnComponentBeginOverlap.AddDynamic(this, &ASProjectile::OnActorOverlap);
 
@@ -35,7 +33,21 @@ void ASProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 	if (OtherActor && OtherActor != GetInstigator())
 	{
 		USAttributeComponent* AttributeComp = Cast<USAttributeComponent>(OtherActor->GetComponentByClass(USAttributeComponent::StaticClass()));
-		AttributeComp->ApplyHealthChange(20.f);
+		if (AttributeComp != nullptr)
+		{
+			AttributeComp->ApplyHealthChange(20.f);
+		}
+	}
+	Explode();
+}
+
+void ASProjectile::Explode_Implementation()
+{
+	if (!IsPendingKillPending())
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(this, ParticleVFX, GetActorLocation(), GetActorRotation());
+
+		Destroy();
 	}
 }
 

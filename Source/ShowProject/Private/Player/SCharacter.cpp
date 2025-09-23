@@ -6,7 +6,7 @@
 #include "Camera/CameraComponent.h"
 #include "EnhancedInputComponent.h"
 #include "Components/SInteractionComponent.h"
-#include "Components/SAttributeComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 ASCharacter::ASCharacter()
@@ -23,7 +23,7 @@ ASCharacter::ASCharacter()
 
 	Interaction = CreateDefaultSubobject<USInteractionComponent>(TEXT("Interaction"));
 
-	Attributes = CreateDefaultSubobject<USAttributeComponent>(TEXT("Attributes"));
+	GetCharacterMovement()->bOrientRotationToMovement = true;
 
 	bUseControllerRotationYaw = false;
 
@@ -36,30 +36,52 @@ void ASCharacter::BeginPlay()
 	
 }
 
+// Called every frame
+void ASCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+}
+
+// Called to bind functionality to input
+void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	UEnhancedInputComponent* EnhancedInput = Cast<UEnhancedInputComponent>(PlayerInputComponent);
+
+	if (EnhancedInput)
+	{
+		EnhancedInput->BindAction(InputActions["Move"], ETriggerEvent::Triggered, this, &ASCharacter::Move);
+		EnhancedInput->BindAction(InputActions["Look"], ETriggerEvent::Triggered, this, &ASCharacter::Look);
+		EnhancedInput->BindAction(InputActions["Interact"], ETriggerEvent::Triggered, this, &ASCharacter::Interact);
+		EnhancedInput->BindAction(InputActions["Jump"], ETriggerEvent::Triggered, this, &ACharacter::Jump);
+		EnhancedInput->BindAction(InputActions["Attack"], ETriggerEvent::Started, this, &ASCharacter::PrimaryAttack);
+	}
+}
+
 void ASCharacter::Move(const FInputActionValue& ActionValue)
 {
 	// Get Value as 2DVector 
 	const FVector2D MoveValue = ActionValue.Get<FVector2D>();
 
-	const FRotator MovementRotation(0, Controller->GetControlRotation().Yaw, 0);
+	const FRotator MovementRotation(0, GetControlRotation().Yaw, 0);
 
 	// Forward/Backward direction
 	if (MoveValue.Y != 0.f)
 	{
-		// Get forward vector
-		const FVector Direction = MovementRotation.RotateVector(FVector::ForwardVector);
-
-		AddMovementInput(Direction, MoveValue.Y);
+		
+		AddMovementInput(MovementRotation.Vector(), MoveValue.Y);
+		
 	}
 
 	// Right/Left direction
 	if (MoveValue.X != 0.f)
 	{
-		// Get right vector
-		const FVector Direction = MovementRotation.RotateVector(FVector::RightVector);
-
-		AddMovementInput(Direction, MoveValue.X);
+		FVector RightVector = FRotationMatrix(MovementRotation).GetScaledAxis(EAxis::Y);
+		AddMovementInput(RightVector, MoveValue.X);
 	}
+	
 }
 
 void ASCharacter::Look(const FInputActionValue& ActionValue)
@@ -87,45 +109,50 @@ void ASCharacter::Interact()
 	}
 }
 
-
-
-// Called every frame
-void ASCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
-// Called to bind functionality to input
-void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-	UEnhancedInputComponent* EnhancedInput = Cast<UEnhancedInputComponent>(PlayerInputComponent);
-
-	if (EnhancedInput)
-	{
-		EnhancedInput->BindAction(InputActions["Move"], ETriggerEvent::Triggered, this, &ASCharacter::Move);
-		EnhancedInput->BindAction(InputActions["Look"], ETriggerEvent::Triggered, this, &ASCharacter::Look);
-		EnhancedInput->BindAction(InputActions["Interact"], ETriggerEvent::Triggered, this, &ASCharacter::Interact);
-		EnhancedInput->BindAction(InputActions["Jump"], ETriggerEvent::Triggered, this, &ACharacter::Jump);
-		EnhancedInput->BindAction(InputActions["Attack"], ETriggerEvent::Started, this, &ASCharacter::PrimaryAttack);
-	}
-}
-
 void ASCharacter::PrimaryAttack()
 {
 	ensure(ProjectileClass);
 	PlayAnimMontage(AttackAnim);
 
-	FVector Location = GetMesh()->GetSocketLocation("Muzzle_01");
-
-	FTransform SpawnTransform = FTransform(GetControlRotation(), Location);
-
-	FActorSpawnParameters Params;
-	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	Params.Instigator = this;
-
-	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTransform,Params);
+	GetWorldTimerManager().SetTimer(TimerHandle_PrimaryAttack, this, &ASCharacter::PrimaryAttack_TimerElapsed, 0.2f);
 }
+
+void ASCharacter::PrimaryAttack_TimerElapsed()
+{
+	SpawnProjectile(ProjectileClass);
+}
+
+void ASCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
+{
+	FVector Location = GetMesh()->GetSocketLocation("Muzzle_01");
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	SpawnParams.Instigator = this;
+
+	FCollisionShape Shape;
+	Shape.SetSphere(20.0f);
+
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+
+	FCollisionObjectQueryParams ObjParams;
+	ObjParams.AddObjectTypesToQuery(ECC_WorldDynamic);
+	ObjParams.AddObjectTypesToQuery(ECC_WorldStatic);
+	ObjParams.AddObjectTypesToQuery(ECC_Pawn);
+
+	FVector TraceStart = Camera->GetComponentLocation();
+	FVector TraceEnd = Camera->GetComponentLocation() + (GetControlRotation().Vector() * 5000.0f);
+	FHitResult Hit;
+
+	if (GetWorld()->SweepSingleByObjectType(Hit, TraceStart, TraceEnd, FQuat::Identity, ObjParams, Shape, Params))
+	{
+		TraceEnd = Hit.ImpactPoint;
+	}
+
+	FRotator ProjRotation = FRotationMatrix::MakeFromX(TraceEnd - Location).Rotator();
+	FTransform SpawnTransform = FTransform(ProjRotation, Location);
+	GetWorld()->SpawnActor<AActor>(ClassToSpawn, SpawnTransform, SpawnParams);
+}
+
+
 

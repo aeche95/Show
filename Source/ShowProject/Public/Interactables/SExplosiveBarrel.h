@@ -20,11 +20,11 @@ public:
 
 protected:
 
-	UPROPERTY(VisibleAnywhere)
-	UStaticMeshComponent* Mesh;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	TObjectPtr<UStaticMeshComponent> Mesh;
 
 	UPROPERTY(VisibleAnywhere)
-	URadialForceComponent* ForceComponent;
+	TObjectPtr<URadialForceComponent> ForceComponent;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

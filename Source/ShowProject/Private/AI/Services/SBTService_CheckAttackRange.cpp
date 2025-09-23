@@ -3,6 +3,7 @@
 
 #include "AI/Services/SBTService_CheckAttackRange.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "AIController.h"
 
 void USBTService_CheckAttackRange::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
@@ -12,6 +13,28 @@ void USBTService_CheckAttackRange::TickNode(UBehaviorTreeComponent& OwnerComp, u
 
 	if (ensure(BBComp))
 	{
-		AActor* Actor = Cast<AActor>(BBComp->GetValueAsObject("TargetActor"));
+		AActor* TargetActor = Cast<AActor>(BBComp->GetValueAsObject("TargetActor"));
+		if (TargetActor)
+		{
+			AAIController* Controller = OwnerComp.GetAIOwner();
+			if (Controller)
+			{
+				APawn* AIPawn = Controller->GetPawn();
+				if (AIPawn)
+				{
+					float DistanceTo = FVector::Distance(TargetActor->GetActorLocation(), AIPawn->GetActorLocation());
+					bool bHasLOS = false;
+					bool bWithinRange = DistanceTo < 2000.f;
+
+					if (bWithinRange)
+					{
+						bHasLOS = Controller->LineOfSightTo(TargetActor);
+					}
+
+					BBComp->SetValueAsBool(AttackRangeKey.SelectedKeyName, (bWithinRange && bHasLOS));
+
+				}
+			}
+		}
 	}
 }

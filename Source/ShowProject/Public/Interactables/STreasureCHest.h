@@ -24,10 +24,10 @@ public:
 protected:
 
 	UPROPERTY(EditAnywhere)
-	UStaticMeshComponent* Base;
+	TObjectPtr<UStaticMeshComponent> Base;
 
-	UPROPERTY(EditAnywhere)
-	UStaticMeshComponent* Lid;
+	UPROPERTY(EditAnywhere, BLueprintReadWrite)
+	TObjectPtr<UStaticMeshComponent> Lid;
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

@@ -17,7 +17,7 @@ class SHOWPROJECT_API ASAIController : public AAIController
 protected:
 
 	UPROPERTY(EditDefaultsOnly, Category="AI")
-	UBehaviorTree* BehaviorTree;
+	TObjectPtr<UBehaviorTree> BehaviorTree;
 
 	virtual void BeginPlay() override;
 	
