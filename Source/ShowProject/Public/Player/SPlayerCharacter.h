@@ -5,7 +5,9 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
-#include "SCharacter.generated.h"
+
+#include "General/SBaseCharacter.h"
+#include "SPlayerCharacter.generated.h"
 
 class USpringArmComponent;
 class UCameraComponent;
@@ -15,13 +17,16 @@ class USInteractionComponent;
 class UAnimMontage;
 
 UCLASS()
-class SHOWPROJECT_API ASCharacter : public ACharacter
+class SHOWPROJECT_API ASPlayerCharacter : public ASBaseCharacter
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
-	ASCharacter();
+	ASPlayerCharacter();
+
+	virtual void PossessedBy(AController* NewController) override;
+	virtual void OnRep_PlayerState() override;
 
 protected:
 
@@ -72,5 +77,8 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+private:
+	void InitAbilityActorInfo();
 
 };

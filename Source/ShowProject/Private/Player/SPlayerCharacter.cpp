@@ -1,15 +1,17 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Player/SCharacter.h"
+#include "Player/SPlayerCharacter.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "EnhancedInputComponent.h"
 #include "Components/SInteractionComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "SPlayerState.h"
+#include "AbilitySystemComponent.h"
 
 // Sets default values
-ASCharacter::ASCharacter()
+ASPlayerCharacter::ASPlayerCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -29,22 +31,34 @@ ASCharacter::ASCharacter()
 
 }
 
+void ASPlayerCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	InitAbilityActorInfo();
+}
+
+void ASPlayerCharacter::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+	InitAbilityActorInfo();
+}
+
 // Called when the game starts or when spawned
-void ASCharacter::BeginPlay()
+void ASPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
 // Called every frame
-void ASCharacter::Tick(float DeltaTime)
+void ASPlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 }
 
 // Called to bind functionality to input
-void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ASPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
@@ -52,15 +66,24 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 	if (EnhancedInput)
 	{
-		EnhancedInput->BindAction(InputActions["Move"], ETriggerEvent::Triggered, this, &ASCharacter::Move);
-		EnhancedInput->BindAction(InputActions["Look"], ETriggerEvent::Triggered, this, &ASCharacter::Look);
-		EnhancedInput->BindAction(InputActions["Interact"], ETriggerEvent::Triggered, this, &ASCharacter::Interact);
+		EnhancedInput->BindAction(InputActions["Move"], ETriggerEvent::Triggered, this, &ASPlayerCharacter::Move);
+		EnhancedInput->BindAction(InputActions["Look"], ETriggerEvent::Triggered, this, &ASPlayerCharacter::Look);
+		EnhancedInput->BindAction(InputActions["Interact"], ETriggerEvent::Triggered, this, &ASPlayerCharacter::Interact);
 		EnhancedInput->BindAction(InputActions["Jump"], ETriggerEvent::Triggered, this, &ACharacter::Jump);
-		EnhancedInput->BindAction(InputActions["Attack"], ETriggerEvent::Started, this, &ASCharacter::PrimaryAttack);
+		EnhancedInput->BindAction(InputActions["Attack"], ETriggerEvent::Started, this, &ASPlayerCharacter::PrimaryAttack);
 	}
 }
 
-void ASCharacter::Move(const FInputActionValue& ActionValue)
+void ASPlayerCharacter::InitAbilityActorInfo()
+{
+	ASPlayerState* SPlayerState = GetPlayerState<ASPlayerState>();
+	check(SPlayerState);
+	SPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(SPlayerState, this);
+	AbilitySystemComponent = SPlayerState->GetAbilitySystemComponent();
+	AttributeSet = SPlayerState->GetAttributeSet();
+}
+
+void ASPlayerCharacter::Move(const FInputActionValue& ActionValue)
 {
 	// Get Value as 2DVector 
 	const FVector2D MoveValue = ActionValue.Get<FVector2D>();
@@ -84,7 +107,7 @@ void ASCharacter::Move(const FInputActionValue& ActionValue)
 	
 }
 
-void ASCharacter::Look(const FInputActionValue& ActionValue)
+void ASPlayerCharacter::Look(const FInputActionValue& ActionValue)
 {
 	const FVector2D LookValue = ActionValue.Get<FVector2D>();
 
@@ -101,7 +124,7 @@ void ASCharacter::Look(const FInputActionValue& ActionValue)
 	}
 }
 
-void ASCharacter::Interact()
+void ASPlayerCharacter::Interact()
 {
 	if (Interaction)
 	{
@@ -109,20 +132,20 @@ void ASCharacter::Interact()
 	}
 }
 
-void ASCharacter::PrimaryAttack()
+void ASPlayerCharacter::PrimaryAttack()
 {
 	ensure(ProjectileClass);
 	PlayAnimMontage(AttackAnim);
 
-	GetWorldTimerManager().SetTimer(TimerHandle_PrimaryAttack, this, &ASCharacter::PrimaryAttack_TimerElapsed, 0.2f);
+	GetWorldTimerManager().SetTimer(TimerHandle_PrimaryAttack, this, &ASPlayerCharacter::PrimaryAttack_TimerElapsed, 0.2f);
 }
 
-void ASCharacter::PrimaryAttack_TimerElapsed()
+void ASPlayerCharacter::PrimaryAttack_TimerElapsed()
 {
 	SpawnProjectile(ProjectileClass);
 }
 
-void ASCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
+void ASPlayerCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 {
 	FVector Location = GetMesh()->GetSocketLocation("Muzzle_01");
 	FActorSpawnParameters SpawnParams;
