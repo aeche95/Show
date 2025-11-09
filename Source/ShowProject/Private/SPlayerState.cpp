@@ -7,7 +7,7 @@
 
 ASPlayerState::ASPlayerState()
 {
-	NetUpdateFrequency = 100.0f;
+	SetNetUpdateFrequency(100.0f);
 
 	AbilitySystemComponent = CreateDefaultSubobject<USAbilitySystemComponent>("Ability System Component");
 	AbilitySystemComponent->SetIsReplicated(true);

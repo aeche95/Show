@@ -17,10 +17,6 @@
 	],
 	"Plugins": [
 		{
-			"Name": "AndroidDeviceProfileSelector",
-			"Enabled": false
-		},
-		{
 			"Name": "AndroidMedia",
 			"Enabled": false
 		},
@@ -194,5 +190,10 @@
 			"Name": "CommonUI",
 			"Enabled": true
 		}
+	],
+	"TargetPlatforms": [
+		"Android",
+		"Linux",
+		"Windows"
 	]
 }
