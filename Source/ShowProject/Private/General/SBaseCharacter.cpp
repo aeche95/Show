@@ -2,6 +2,7 @@
 
 
 #include "General/SBaseCharacter.h"
+#include "AbilitySystem/SAbilitySystemComponent.h"
 
 // Sets default values
 ASBaseCharacter::ASBaseCharacter()
@@ -21,5 +22,12 @@ void ASBaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+}
+
+void ASBaseCharacter::AddCharacterAbilities()
+{
+	if (!HasAuthority()) return;
+	USAbilitySystemComponent* ASC = CastChecked<USAbilitySystemComponent>(AbilitySystemComponent);
+	ASC->AddCharacterAbilities(StartupAbilities);
 }
 

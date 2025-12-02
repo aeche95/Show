@@ -13,5 +13,8 @@ UCLASS()
 class SHOWPROJECT_API USSaveGame : public USaveGame
 {
 	GENERATED_BODY()
+
+	UPROPERTY()
+	int32 Currency;
 	
 };

@@ -27,9 +27,12 @@ void ASEffectActor::ApplyEffectToTarget(AActor* Target, TSubclassOf<UGameplayEff
 {
 	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(Target);
 
+	if (TargetASC == nullptr) return;
+
+	check(EffectClass);
 	FGameplayEffectContextHandle EffectContextHandle = TargetASC->MakeEffectContext();
 	EffectContextHandle.AddSourceObject(this);
-	FGameplayEffectSpecHandle EffectSpec = TargetASC->MakeOutgoingSpec(EffectClass, 1.0f, EffectContextHandle);
-	//TargetASC->ApplyGameplayEffectSpecToSelf();
+	FGameplayEffectSpecHandle EffectSpecHandle = TargetASC->MakeOutgoingSpec(EffectClass, 1.0f, EffectContextHandle);
+	TargetASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
 }
 
