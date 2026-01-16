@@ -14,6 +14,7 @@ ASPlayerController::ASPlayerController()
 
 void ASPlayerController::SetupInputComponent()
 {
+    Super::SetupInputComponent();
 	if (UEnhancedInputLocalPlayerSubsystem* EnhancedInputSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
     {
         EnhancedInputSubsystem->ClearAllMappings();
