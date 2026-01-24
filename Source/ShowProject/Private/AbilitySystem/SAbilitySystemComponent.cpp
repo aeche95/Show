@@ -11,3 +11,15 @@ void USAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<UG
 		GiveAbility(AbilitySpec);
 	}
 }
+
+void USAbilitySystemComponent::AbilityActorInfoSet()
+{
+	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &USAbilitySystemComponent::EffectApllied);
+}
+
+void USAbilitySystemComponent::EffectApllied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle)
+{
+	FGameplayTagContainer TagContainer;
+	EffectSpec.GetAllAssetTags(TagContainer);
+	//EffectAssetTags.Broadcast(TagContainer);
+}
