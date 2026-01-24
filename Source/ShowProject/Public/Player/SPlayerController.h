@@ -4,10 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "GameplayTagContainer.h"
 #include "SPlayerController.generated.h"
 
 class UInputMappingContext;
 class USAttributeComponent;
+class USInputConfig;
+class USAbilitySystemComponent;
 
 /**
  * Player controller class, to handle input
@@ -30,5 +33,19 @@ protected:
 	TObjectPtr<USAttributeComponent> Attributes;
 
 	virtual void SetupInputComponent() override;
+
+private:
+
+	void AbilityInputTagPressed(FGameplayTag InputTag);
+	void AbilityInputTagHeld(FGameplayTag InputTag);
+	void AbilityInputTagReleased(FGameplayTag InputTag);
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<USInputConfig> InputConfig;
+
+	UPROPERTY()
+	TObjectPtr<USAbilitySystemComponent> SAbilitySystemComponent;
+
+	USAbilitySystemComponent* GetASC();
 	
 };

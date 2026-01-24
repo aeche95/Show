@@ -13,5 +13,10 @@ UCLASS()
 class SHOWPROJECT_API USGameplayAbility : public UGameplayAbility
 {
 	GENERATED_BODY()
+
+public:
+
+	UPROPERTY(EditDefaultsOnly)
+	FGameplayTag StartupInputTag;
 	
 };
