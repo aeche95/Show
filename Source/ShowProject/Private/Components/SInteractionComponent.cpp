@@ -16,18 +16,33 @@ USInteractionComponent::USInteractionComponent()
 
 void USInteractionComponent::PrimaryInteract()
 {
+	ServerInteract();
+}
+
+
+// Called when the game starts
+void USInteractionComponent::BeginPlay()
+{
+	Super::BeginPlay();
+
+	// ...
+	
+}
+
+void USInteractionComponent::ServerInteract_Implementation()
+{
 	FCollisionObjectQueryParams Params;
 	Params.AddObjectTypesToQuery(ECC_WorldDynamic);
 
 	AActor* Owner = GetOwner();
-	
+
 
 	FVector EyeLocation;
 	FRotator EyeRotation;
 	Owner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
 
 	FVector End = EyeLocation + EyeRotation.Vector() * 1000;
-	
+
 	/*FHitResult OutHit;
 
 	GetWorld()->LineTraceSingleByObjectType(OutHit, EyeLocation, End, Params);*/
@@ -41,28 +56,18 @@ void USInteractionComponent::PrimaryInteract()
 	for (FHitResult Hit : Hits)
 	{
 		AActor* HitActor = Hit.GetActor();
-		if(HitActor)
+		if (HitActor)
 		{
 			if (HitActor->Implements<USInteractionInterface>())
 			{
 				APawn* MyPawn = Cast<APawn>(Owner);
-			
+
 				ISInteractionInterface::Execute_Interact(HitActor, MyPawn);
 				break;
 			}
 		}
 
 	}
-}
-
-
-// Called when the game starts
-void USInteractionComponent::BeginPlay()
-{
-	Super::BeginPlay();
-
-	// ...
-	
 }
 
 

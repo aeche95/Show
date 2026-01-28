@@ -26,7 +26,7 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UStaticMeshComponent> Base;
 
-	UPROPERTY(EditAnywhere, BLueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UStaticMeshComponent> Lid;
 
 	// Called when the game starts or when spawned

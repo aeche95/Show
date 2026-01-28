@@ -14,6 +14,7 @@ ASEffectActor::ASEffectActor()
 	PrimaryActorTick.bCanEverTick = false;
 
 	SetRootComponent(CreateDefaultSubobject<USceneComponent>("SceneRoot"));
+	Mesh = CreateDefaultSubobject<UMeshComponent>("Mesh");
 }
 
 // Called when the game starts or when spawned
