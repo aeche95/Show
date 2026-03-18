@@ -11,6 +11,7 @@ class UInputMappingContext;
 class USAttributeComponent;
 class USInputConfig;
 class USAbilitySystemComponent;
+class USAttributeSet;
 
 /**
  * Player controller class, to handle input
@@ -24,15 +25,23 @@ public:
 
 	ASPlayerController();
 
+	UFUNCTION(BlueprintCallable)
+	USAbilitySystemComponent* GetASC();
+
+	UFUNCTION(BlueprintCallable)
+	USAttributeSet* GetAttributeSet();
+
 protected:
 
 	UPROPERTY(EditDefaultsOnly, meta=(AllowBlueprintPrivateAccess="true"))
 	TObjectPtr<UInputMappingContext> BaseMappingContext;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	TObjectPtr<USAttributeComponent> Attributes;
-
 	virtual void SetupInputComponent() override;
+
+	virtual void OnPossess(APawn* Pawn) override;
+
+	UFUNCTION(BlueprintCallable)
+	void InitializePlayerVM();
 
 private:
 
@@ -43,9 +52,4 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<USInputConfig> InputConfig;
 
-	UPROPERTY()
-	TObjectPtr<USAbilitySystemComponent> SAbilitySystemComponent;
-
-	USAbilitySystemComponent* GetASC();
-	
 };

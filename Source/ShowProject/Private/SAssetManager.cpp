@@ -2,7 +2,7 @@
 
 
 #include "SAssetManager.h"
-#include "SGameplayTags.h"
+#include "AbilitySystem/SGameplayTags.h"
 
 USAssetManager& USAssetManager::Get()
 {

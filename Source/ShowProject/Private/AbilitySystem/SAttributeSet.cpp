@@ -5,12 +5,20 @@
 
 #include "Net/UnrealNetwork.h"
 
+#define REPFUNC(AttributeName) \
+	void USAttributeSet::OnRep_##AttributeName##(const FGameplayAttributeData& Old##AttributeName##) const \
+	{\
+		GAMEPLAYATTRIBUTE_REPNOTIFY(USAttributeSet, ##AttributeName##, Old##AttributeName##);\
+	}\
+	
+
 USAttributeSet::USAttributeSet()
 {
 	InitHealth(100.0);
 	InitMaxHealth(100.0);
 	InitMana(1000.0);
 	InitMaxMana(1000.0);
+
 }
 
 void USAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -23,22 +31,8 @@ void USAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 	DOREPLIFETIME_CONDITION_NOTIFY(USAttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
 }
 
-void USAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) const
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(USAttributeSet, Health, OldHealth);
-}
+REPFUNC(Health)
+REPFUNC(MaxHealth)
+REPFUNC(Mana)
+REPFUNC(MaxMana)
 
-void USAttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth) const
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(USAttributeSet, MaxHealth, OldMaxHealth);
-}
-
-void USAttributeSet::OnRep_Mana(const FGameplayAttributeData& OldMana) const
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(USAttributeSet, Mana, OldMana);
-}
-
-void USAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) const
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(USAttributeSet, MaxMana, OldMaxMana);
-}

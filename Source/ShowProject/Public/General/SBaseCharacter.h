@@ -8,7 +8,7 @@
 #include "SBaseCharacter.generated.h"
 
 class UAbilitySystemComponent;
-class UAttributeSet;
+class USAttributeSet;
 class UGameplayAbility;
 
 UCLASS()
@@ -22,7 +22,7 @@ public:
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
-	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
+	USAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
 protected:
 	// Called when the game starts or when spawned
@@ -32,7 +32,7 @@ protected:
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 
 	UPROPERTY()
-	TObjectPtr<UAttributeSet> AttributeSet;
+	TObjectPtr<USAttributeSet> AttributeSet;
 
 	void AddCharacterAbilities();
 

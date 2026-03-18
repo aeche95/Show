@@ -7,7 +7,7 @@
 #include "EnhancedInputComponent.h"
 #include "Components/SInteractionComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "SPlayerState.h"
+#include "Player/SPlayerState.h"
 #include "AbilitySystemComponent.h"
 
 // Sets default values

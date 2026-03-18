@@ -25,9 +25,6 @@ public:
 	// Sets default values for this character's properties
 	ASPlayerCharacter();
 
-	virtual void PossessedBy(AController* NewController) override;
-	virtual void OnRep_PlayerState() override;
-
 protected:
 
 	UPROPERTY(VisibleAnywhere)
@@ -70,6 +67,10 @@ protected:
 	void PrimaryAttack_TimerElapsed();
 
 	void SpawnProjectile(TSubclassOf<AActor> ClassToSpawn);
+
+	virtual void PossessedBy(AController* NewController) override;
+
+	virtual void OnRep_PlayerState() override;
 
 public:	
 	// Called every frame

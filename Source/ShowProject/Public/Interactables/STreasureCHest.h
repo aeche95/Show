@@ -29,6 +29,12 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UStaticMeshComponent> Lid;
 
+	UPROPERTY(ReplicatedUsing = "OnRep_LidOpened")
+	bool bLidOpened;
+
+	UFUNCTION()
+	void OnRep_LidOpened();
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 

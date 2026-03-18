@@ -4,7 +4,7 @@
 #include "Settings/SGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "General/SSaveGame.h"
-#include "SPlayerState.h"
+#include "Player/SPlayerState.h"
 
 ASGameMode::ASGameMode()
 {
