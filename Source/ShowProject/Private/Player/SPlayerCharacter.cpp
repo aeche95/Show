@@ -4,11 +4,13 @@
 #include "Player/SPlayerCharacter.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
-#include "EnhancedInputComponent.h"
 #include "Components/SInteractionComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Player/SPlayerState.h"
 #include "AbilitySystemComponent.h"
+#include "Input/SInputComponent.h"
+
+#include "AbilitySystem/SGameplayTags.h"
 
 // Sets default values
 ASPlayerCharacter::ASPlayerCharacter()
@@ -63,15 +65,16 @@ void ASPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	UEnhancedInputComponent* EnhancedInput = Cast<UEnhancedInputComponent>(PlayerInputComponent);
+	USInputComponent* SInputComponent = Cast<USInputComponent>(PlayerInputComponent);
 
-	if (EnhancedInput)
+	const FSGameplayTags& GameplayTags = FSGameplayTags::Get();
+
+	if (SInputComponent)
 	{
-		EnhancedInput->BindAction(InputActions["Move"], ETriggerEvent::Triggered, this, &ASPlayerCharacter::Move);
-		EnhancedInput->BindAction(InputActions["Look"], ETriggerEvent::Triggered, this, &ASPlayerCharacter::Look);
-		EnhancedInput->BindAction(InputActions["Interact"], ETriggerEvent::Triggered, this, &ASPlayerCharacter::Interact);
-		EnhancedInput->BindAction(InputActions["Jump"], ETriggerEvent::Triggered, this, &ACharacter::Jump);
-		EnhancedInput->BindAction(InputActions["Attack"], ETriggerEvent::Started, this, &ASPlayerCharacter::PrimaryAttack);
+		SInputComponent->BindActionByTag(InputConfig, GameplayTags.Input_Move, ETriggerEvent::Triggered, this, &ASPlayerCharacter::Move);
+		SInputComponent->BindActionByTag(InputConfig, GameplayTags.Input_Look, ETriggerEvent::Triggered, this, &ASPlayerCharacter::Look);
+		SInputComponent->BindActionByTag(InputConfig, GameplayTags.Input_Interact, ETriggerEvent::Triggered, this, &ASPlayerCharacter::Interact);
+		SInputComponent->BindActionByTag(InputConfig, GameplayTags.Input_Jump, ETriggerEvent::Triggered, this, &ACharacter::Jump);
 	}
 }
 
@@ -123,6 +126,10 @@ void ASPlayerCharacter::Look(const FInputActionValue& ActionValue)
 	{
 		AddControllerPitchInput(LookValue.Y);
 	}
+}
+
+void ASPlayerCharacter::Attack(const FInputActionValue& ActionValue)
+{
 }
 
 void ASPlayerCharacter::Interact()

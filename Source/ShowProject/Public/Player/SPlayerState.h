@@ -7,9 +7,10 @@
 #include "AbilitySystemInterface.h"
 #include "SPlayerState.generated.h"
 
-class UAbilitySystemComponent;
+class USAbilitySystemComponent;
 class USAttributeSet;
 struct FOnAttributeChangeData;
+class USGameplayAbility;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnCreditsChangedSignature, ASPlayerState*, PlayerState, int32, NewCredits, int32, Delta);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnXPChangedSignature, ASPlayerState*, PlayerState, int32, NewXP, int32, Delta);
@@ -25,7 +26,7 @@ class SHOWPROJECT_API ASPlayerState : public APlayerState, public IAbilitySystem
 protected:
 
 	UPROPERTY()
-	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+	TObjectPtr<USAbilitySystemComponent> AbilitySystemComponent;
 
 	UPROPERTY()
 	TObjectPtr<USAttributeSet> AttributeSet;
@@ -46,11 +47,16 @@ protected:
 	void OnHealthChanged(const FOnAttributeChangeData& Data);
 	void OnManaChanged(const FOnAttributeChangeData& Data);
 
+	virtual void BeginPlay() override;
+
 public:
 	ASPlayerState();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 	USAttributeSet* GetAttributeSet() const { return AttributeSet; }
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	TArray<TSubclassOf<USGameplayAbility>> StartingAbilities;
 
 	UFUNCTION(BlueprintCallable, Category = "Credits")
 	int32 GetCredits() const;

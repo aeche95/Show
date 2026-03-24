@@ -43,6 +43,18 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void InitializePlayerVM();
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FGameplayTag PrimaryActionTag;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FGameplayTag SecondaryActionTag;
+
+	UFUNCTION()
+	void OnPrimaryAction();
+
+	UFUNCTION()
+	void OnSecondaryAction();
+
 private:
 
 	void AbilityInputTagPressed(FGameplayTag InputTag);

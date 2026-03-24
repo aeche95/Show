@@ -6,7 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "SAbilitySystemComponent.generated.h"
 
-class UGameplayAbility;
+class USGameplayAbility;
 /**
  * 
  */
@@ -17,7 +17,7 @@ class SHOWPROJECT_API USAbilitySystemComponent : public UAbilitySystemComponent
 
 public:
 
-	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities);
+	void AddCharacterAbilities(const TArray<TSubclassOf<USGameplayAbility>>& StartupAbilities);
 	
 	void AbilityActorInfoSet();
 

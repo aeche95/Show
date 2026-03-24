@@ -15,6 +15,7 @@ class UInputMappingContext;
 class UInputAction;
 class USInteractionComponent;
 class UAnimMontage;
+class USInputConfig;
 
 UCLASS()
 class SHOWPROJECT_API ASPlayerCharacter : public ASBaseCharacter
@@ -45,6 +46,8 @@ protected:
 	void Move(const FInputActionValue& ActionValue);
 
 	void Look(const FInputActionValue& ActionValue);
+
+	void Attack(const FInputActionValue& ActionValue);
 
 	void Interact();
 	
@@ -79,7 +82,12 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UCameraComponent* GetCamera() { return Camera; }
+
 private:
 	void InitAbilityActorInfo();
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<USInputConfig> InputConfig;
 
 };

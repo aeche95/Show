@@ -11,6 +11,7 @@
 #include "UI/SHUD.h"
 #include "AbilitySystem/SAttributeSet.h"
 #include "MVVMGameSubsystem.h"
+#include "AbilitySystem/SGameplayTags.h"
 
 
 
@@ -29,8 +30,12 @@ void ASPlayerController::SetupInputComponent()
     }
 
     USInputComponent* SInputComponent = CastChecked<USInputComponent>(InputComponent);
+    const FSGameplayTags& GameplayTags = FSGameplayTags::Get();
 
     SInputComponent->BindAbilityAction(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
+
+    SInputComponent->BindActionByTag(InputConfig, GameplayTags.Input_PrimaryAction, ETriggerEvent::Triggered, this, &ThisClass::OnPrimaryAction);
+    SInputComponent->BindActionByTag(InputConfig, GameplayTags.Input_SecondaryAction, ETriggerEvent::Triggered, this, &ThisClass::OnSecondaryAction);
 }
 
 void ASPlayerController::OnPossess(APawn* InPawn)
@@ -65,6 +70,16 @@ void ASPlayerController::InitializePlayerVM()
             }
         }
     }
+}
+
+void ASPlayerController::OnPrimaryAction()
+{
+    AbilityInputTagHeld(PrimaryActionTag);
+}
+
+void ASPlayerController::OnSecondaryAction()
+{
+    AbilityInputTagHeld(SecondaryActionTag);
 }
 
 void ASPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)

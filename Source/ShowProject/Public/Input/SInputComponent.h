@@ -14,9 +14,13 @@ UCLASS()
 class SHOWPROJECT_API USInputComponent : public UEnhancedInputComponent
 {
 	GENERATED_BODY()
+
 public:
 	template<class UserClass, typename PressedFuncType, typename ReleasedFuncType, typename HeldFuncType>
 	void BindAbilityAction(const USInputConfig* InputConfig, UserClass* Object, PressedFuncType PressedFunc, ReleasedFuncType ReleasedFunc, HeldFuncType HeldFunc);
+
+	template<class UserClass, typename FuncType>
+	void BindActionByTag(const USInputConfig* InputConfig, const FGameplayTag& InputTag, ETriggerEvent TriggerEvent, UserClass* Object, FuncType Func);
 };
 
 template<class UserClass, typename PressedFuncType, typename ReleasedFuncType, typename HeldFuncType>
@@ -43,5 +47,15 @@ inline void USInputComponent::BindAbilityAction(const USInputConfig* InputConfig
 				BindAction(Action.InputAction, ETriggerEvent::Triggered, Object, HeldFunc, Action.InputTag);
 			}
 		}
+	}
+}
+
+template<class UserClass, typename FuncType>
+void USInputComponent::BindActionByTag(const USInputConfig* InputConfig, const FGameplayTag& InputTag, ETriggerEvent TriggerEvent, UserClass* Object, FuncType Func)
+{
+	check(InputConfig);
+	if (const UInputAction* IA = InputConfig->FindInputActionForTag(InputTag))
+	{
+		BindAction(IA, TriggerEvent, Object, Func);
 	}
 }

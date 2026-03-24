@@ -9,7 +9,7 @@
 
 class UAbilitySystemComponent;
 class USAttributeSet;
-class UGameplayAbility;
+class USGameplayAbility;
 
 UCLASS()
 class SHOWPROJECT_API ASBaseCharacter : public ACharacter, public IAbilitySystemInterface
@@ -39,6 +39,6 @@ protected:
 private:
 
 	UPROPERTY(EditAnywhere, Category = "Abilities")
-	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
+	TArray<TSubclassOf<USGameplayAbility>> StartupAbilities;
 
 };

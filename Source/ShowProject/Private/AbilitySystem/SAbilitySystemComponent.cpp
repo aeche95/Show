@@ -4,9 +4,9 @@
 #include "AbilitySystem/SAbilitySystemComponent.h"
 #include "AbilitySystem/Abilities/SGameplayAbility.h"
 
-void USAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities)
+void USAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<USGameplayAbility>>& StartupAbilities)
 {
-	for (const TSubclassOf<UGameplayAbility> AbilityClass : StartupAbilities)
+	for (const TSubclassOf<USGameplayAbility> AbilityClass : StartupAbilities)
 	{
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
 		if (const USGameplayAbility* SAbility = Cast<USGameplayAbility>(AbilitySpec.Ability))

@@ -49,6 +49,14 @@ void ASPlayerState::OnManaChanged(const FOnAttributeChangeData& Data)
 
 }
 
+void ASPlayerState::BeginPlay()
+{
+	Super::BeginPlay();
+
+	AbilitySystemComponent->InitAbilityActorInfo(this, GetPawn());
+	AbilitySystemComponent->AddCharacterAbilities(StartingAbilities);
+}
+
 UAbilitySystemComponent* ASPlayerState::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
