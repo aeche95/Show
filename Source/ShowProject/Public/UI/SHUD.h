@@ -16,5 +16,6 @@ class SHOWPROJECT_API ASHUD : public AHUD
 
 public:
 
-	
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnPause();
 };

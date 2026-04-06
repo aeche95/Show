@@ -55,6 +55,9 @@ protected:
 	UFUNCTION()
 	void OnSecondaryAction();
 
+	UFUNCTION()
+	void OnPause();
+
 private:
 
 	void AbilityInputTagPressed(FGameplayTag InputTag);

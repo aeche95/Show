@@ -134,10 +134,6 @@
 			]
 		},
 		{
-			"Name": "PerforceSourceControl",
-			"Enabled": false
-		},
-		{
 			"Name": "RiderSourceCodeAccess",
 			"Enabled": false
 		},

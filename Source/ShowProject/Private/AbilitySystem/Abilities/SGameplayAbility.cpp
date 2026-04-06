@@ -3,3 +3,7 @@
 
 #include "AbilitySystem/Abilities/SGameplayAbility.h"
 
+USGameplayAbility::USGameplayAbility()
+{
+	ReplicationPolicy = EGameplayAbilityReplicationPolicy::ReplicateYes;
+}

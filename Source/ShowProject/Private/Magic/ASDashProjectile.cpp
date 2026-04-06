@@ -19,14 +19,14 @@ void AASDashProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GetWorldTimerManager().SetTimer(TimerHandle_DelayedDetonate, this, &AASDashProjectile::Explode, DetonateDelay);
+	GetWorldTimerManager().SetTimer(TimerHandle_DelayedDetonate, this, &AASDashProjectile::Trigger, DetonateDelay);
 }
 
-void AASDashProjectile::Explode_Implementation()
+void AASDashProjectile::Trigger()
 {
 	GetWorldTimerManager().ClearTimer(TimerHandle_DelayedDetonate);
 
-	UGameplayStatics::SpawnEmitterAtLocation(this, ParticleVFX, GetActorLocation(), GetActorRotation());
+	UGameplayStatics::SpawnEmitterAtLocation(this, TriggerVFX, GetActorLocation(), GetActorRotation());
 
 	ParticleSystem->DeactivateSystem();
 

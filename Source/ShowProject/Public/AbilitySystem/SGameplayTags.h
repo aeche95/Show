@@ -21,6 +21,7 @@ public:
 	FGameplayTag Input_Crouch;
 	FGameplayTag Input_Jump;
 	FGameplayTag Input_Interact;
+	FGameplayTag Input_Pause;
 	FGameplayTag Input_PrimaryAction;
 	FGameplayTag Input_SecondaryAction;
 
@@ -28,6 +29,9 @@ public:
 	FGameplayTag Attributes_Primary_MaxHealth;
 	FGameplayTag Attributes_Primary_Mana;
 	FGameplayTag Attributes_Primary_MaxMana;
+	FGameplayTag Attributes_Primary_Damage;
+	FGameplayTag Attributes_Primary_Defence;
+	FGameplayTag Attributes_Primary_Speed;
 
 	FGameplayTag Attributes_Secondary_Armor;
 	FGameplayTag Attributes_Secondary_Vitality;
@@ -35,6 +39,7 @@ public:
 	FGameplayTag Attributes_Secondary_Dexterity;
 	FGameplayTag Attributes_Secondary_Resilience;
 
+	FGameplayTag Abilities_Projectile;
 	FGameplayTag Abilities_Projectile_Basic;
 	FGameplayTag Abilities_Projectile_BlackHole;
 	FGameplayTag Abilities_Projectile_Teleport;

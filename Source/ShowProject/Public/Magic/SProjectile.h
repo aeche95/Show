@@ -31,16 +31,20 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UParticleSystemComponent> ParticleSystem;
 
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr <UParticleSystem> ParticleVFX;
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr <UParticleSystem> TriggerVFX;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly);
+	float SphereRadius = 5.0;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly);
+	float ProjectileSpeed = 10.0;
 
 	UFUNCTION()
-	virtual void OnActorOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	virtual void OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& SweepResult);
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void Explode();
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	UFUNCTION()
+	virtual void OnCollision(AActor* OtherActor);
 
+	virtual void PostInitializeComponents() override;
 };

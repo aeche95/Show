@@ -27,7 +27,7 @@ protected:
 
 	FTimerHandle TimerHandle_DelayedDetonate;
 
-	virtual void Explode_Implementation() override;
+	void Trigger();
 
 	void TeleportInstigator();
 

@@ -2,13 +2,33 @@
 
 
 #include "AbilitySystem/Abilities/SProjectileGameplayAbility.h"
-#include "AbilitySystem/Tasks/SATPlayMontageAndWaitForEvent.h"
 #include "Player/SPlayerCharacter.h"
 #include "Camera/CameraComponent.h"
+#include "Magic/SProjectile.h"
+#include "AbilitySystem/Tasks/SATPlayMontageAndWaitForEvent.h"
+#include "AbilitySystem/SGameplayTags.h"
 
 void USProjectileGameplayAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+
+	ASPlayerCharacter* Player = Cast<ASPlayerCharacter>(ActorInfo->AvatarActor.Get());
+	if (Player && AttackAnim)
+	{
+		Task = USATPlayMontageAndWaitForEvent::PlayMontageAndWaitForEvent(this, "Play Montage And Wait For Event", AttackAnim, FGameplayTagContainer());
+		Task->EventReceived.AddDynamic(this, &USProjectileGameplayAbility::EventReceived);
+		Task->OnBlendOut.AddDynamic(this, &USProjectileGameplayAbility::OnMontageEndEvent);
+		Task->OnCancelled.AddDynamic(this, &USProjectileGameplayAbility::OnMontageEndEvent);
+		Task->OnCompleted.AddDynamic(this, &USProjectileGameplayAbility::OnMontageEndEvent);
+
+		Task->Activate();
+	}
+}
+
+void USProjectileGameplayAbility::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
+{
+	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
+	
 }
 
 void USProjectileGameplayAbility::SpawnProjectile()
@@ -42,5 +62,18 @@ void USProjectileGameplayAbility::SpawnProjectile()
 
 	FRotator ProjRotation = FRotationMatrix::MakeFromX(TraceEnd - Location).Rotator();
 	FTransform SpawnTransform = FTransform(ProjRotation, Location);
-	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTransform, SpawnParams);
+	GetWorld()->SpawnActor<ASProjectile>(ProjectileClass, SpawnTransform, SpawnParams);
+}
+
+void USProjectileGameplayAbility::EventReceived(FGameplayTag EventTag, FGameplayEventData EventData)
+{
+	if (EventTag.MatchesTagExact(FSGameplayTags::Get().Abilities_Projectile_Basic))
+	{
+		SpawnProjectile();
+	}
+}
+
+void USProjectileGameplayAbility::OnMontageEndEvent(FGameplayTag EventTag, FGameplayEventData EventData)
+{
+	K2_EndAbility();
 }

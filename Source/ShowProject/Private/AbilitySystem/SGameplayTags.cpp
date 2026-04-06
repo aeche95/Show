@@ -15,6 +15,7 @@ void FSGameplayTags::InitializeGameplayTags()
 	GameplayTags.Input_Jump = MAKETAG("Input.Jump");
 	GameplayTags.Input_Crouch = MAKETAG("Input.Crouch");
 	GameplayTags.Input_Interact = MAKETAG("Input.Interact");
+	GameplayTags.Input_Pause = MAKETAG("Input.Pause");
 	GameplayTags.Input_PrimaryAction = MAKETAG("Input.PrimaryAction");
 	GameplayTags.Input_SecondaryAction = MAKETAG("Input.SecondaryAction");
 
@@ -22,6 +23,9 @@ void FSGameplayTags::InitializeGameplayTags()
 	GameplayTags.Attributes_Primary_MaxHealth = MAKETAG("Attributes.Primary.MaxHealth");
 	GameplayTags.Attributes_Primary_Mana = MAKETAG("Attributes.Primary.Mana");
 	GameplayTags.Attributes_Primary_MaxMana = MAKETAG("Attributes.Primary.MaxMana");
+	GameplayTags.Attributes_Primary_Damage = MAKETAG("Attributes.Primary.Damage");
+	GameplayTags.Attributes_Primary_Defence = MAKETAG("Attributes.Primary.Defence");
+	GameplayTags.Attributes_Primary_Speed = MAKETAG("Attributes.Primary.Speed");
 
 	GameplayTags.Attributes_Secondary_Armor = MAKETAG("Attributes.Secondary.Armor");
 	GameplayTags.Attributes_Secondary_Vitality = MAKETAG("Attributes.Secondary.Vitality");
@@ -29,6 +33,7 @@ void FSGameplayTags::InitializeGameplayTags()
 	GameplayTags.Attributes_Secondary_Dexterity = MAKETAG("Attributes.Secondary.Dexterity");
 	GameplayTags.Attributes_Secondary_Resilience = MAKETAG("Attributes.Secondary.Resilience");
 
+	GameplayTags.Abilities_Projectile = MAKETAG("Abilities.Projectile");
 	GameplayTags.Abilities_Projectile_Basic = MAKETAG("Abilities.Projectile.Basic");
 	GameplayTags.Abilities_Projectile_BlackHole = MAKETAG("Abilities.Projectile.BlackHole");
 	GameplayTags.Abilities_Projectile_Teleport = MAKETAG("Abilities.Projectile.Teleport");

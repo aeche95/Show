@@ -19,6 +19,6 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	FGameplayTag StartupInputTag;
 	
-
+	USGameplayAbility();
 
 };

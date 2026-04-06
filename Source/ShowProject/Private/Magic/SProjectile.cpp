@@ -12,23 +12,28 @@
 ASProjectile::ASProjectile()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
+	SetReplicates(true);
+	SetReplicateMovement(true);
 
 	Sphere = CreateDefaultSubobject<USphereComponent>("Sphere");
 	RootComponent = Sphere;
 	Sphere->SetCollisionProfileName("Projectile");
-	Sphere->OnComponentBeginOverlap.AddDynamic(this, &ASProjectile::OnActorOverlap);
+	Sphere->SetSphereRadius(SphereRadius);
+	Sphere->SetIsReplicated(true);
 
 	ParticleSystem = CreateDefaultSubobject<UParticleSystemComponent>("Particle System");
 	ParticleSystem->SetupAttachment(RootComponent);
+	ParticleSystem->SetIsReplicated(true);
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>("Projectile Movement");
-	ProjectileMovement->InitialSpeed = 1000.f;
+	ProjectileMovement->InitialSpeed = ProjectileSpeed;
 	ProjectileMovement->bRotationFollowsVelocity = true;
 	ProjectileMovement->bInitialVelocityInLocalSpace = true;
+	ProjectileMovement->SetIsReplicated(true);
 }
 
-void ASProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void ASProjectile::OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& SweepResult)
 {
 	if (OtherActor && OtherActor != GetInstigator())
 	{
@@ -38,23 +43,18 @@ void ASProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 			AttributeComp->ApplyHealthChange(20.f);
 		}
 	}
-	Explode();
+
 }
 
-void ASProjectile::Explode_Implementation()
+void ASProjectile::OnCollision(AActor* OtherActor)
 {
-	if (!IsPendingKillPending())
-	{
-		UGameplayStatics::SpawnEmitterAtLocation(this, ParticleVFX, GetActorLocation(), GetActorRotation());
-
-		Destroy();
-	}
+	Destroy();
 }
 
-// Called every frame
-void ASProjectile::Tick(float DeltaTime)
+void ASProjectile::PostInitializeComponents()
 {
-	Super::Tick(DeltaTime);
+	Super::PostInitializeComponents();
 
+	Sphere->OnComponentHit.AddDynamic(this, &ASProjectile::OnActorHit);
+	Sphere->IgnoreActorWhenMoving(GetInstigator(), true);
 }
-

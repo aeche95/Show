@@ -36,6 +36,7 @@ void ASPlayerController::SetupInputComponent()
 
     SInputComponent->BindActionByTag(InputConfig, GameplayTags.Input_PrimaryAction, ETriggerEvent::Triggered, this, &ThisClass::OnPrimaryAction);
     SInputComponent->BindActionByTag(InputConfig, GameplayTags.Input_SecondaryAction, ETriggerEvent::Triggered, this, &ThisClass::OnSecondaryAction);
+    SInputComponent->BindActionByTag(InputConfig, GameplayTags.Input_Pause, ETriggerEvent::Triggered, this, &ThisClass::OnPause);
 }
 
 void ASPlayerController::OnPossess(APawn* InPawn)
@@ -82,6 +83,15 @@ void ASPlayerController::OnSecondaryAction()
     AbilityInputTagHeld(SecondaryActionTag);
 }
 
+void ASPlayerController::OnPause()
+{
+    ASHUD* Hud = GetHUD<ASHUD>();
+    if (Hud)
+    {
+        Hud->OnPause();
+    }
+}
+
 void ASPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
     
@@ -102,8 +112,16 @@ void ASPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 
 USAbilitySystemComponent* ASPlayerController::GetASC()
 {
-    USAbilitySystemComponent* SAbilitySystemComponent = CastChecked<USAbilitySystemComponent>(GetPlayerState<ASPlayerState>()->GetAbilitySystemComponent());
-    return SAbilitySystemComponent;
+    ASPlayerState* SPlayerState = GetPlayerState<ASPlayerState>();
+    if (SPlayerState)
+    {
+        USAbilitySystemComponent* SAbilitySystemComponent = CastChecked<USAbilitySystemComponent>(SPlayerState->GetAbilitySystemComponent());
+        return SAbilitySystemComponent;
+    }
+    else
+    {
+        return nullptr;
+    }
 }
 
 USAttributeSet* ASPlayerController::GetAttributeSet()

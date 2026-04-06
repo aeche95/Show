@@ -8,6 +8,8 @@
 
 
 class UAnimMontage;
+class ASProjectile;
+class USATPlayMontageAndWaitForEvent;
 /**
  * 
  */
@@ -19,15 +21,23 @@ class SHOWPROJECT_API USProjectileGameplayAbility : public USGameplayAbility
 public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attack")
-	TSubclassOf<AActor> ProjectileClass;
+	TSubclassOf<ASProjectile> ProjectileClass;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attack")
 	UAnimMontage* AttackAnim;
 
+	UPROPERTY()
+	TObjectPtr<USATPlayMontageAndWaitForEvent> Task;
 
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
 
+	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
 	UFUNCTION(BlueprintCallable)
 	void SpawnProjectile();
-	
+
+	UFUNCTION()
+	void EventReceived(FGameplayTag EventTag, FGameplayEventData EventData);
+
+	UFUNCTION()
+	void OnMontageEndEvent(FGameplayTag EventTag, FGameplayEventData EventData);
 };

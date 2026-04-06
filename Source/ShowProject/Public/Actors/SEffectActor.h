@@ -26,6 +26,9 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<USceneComponent> SceneComponent;
+
+	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UMeshComponent> Mesh;
 
 	UFUNCTION(BlueprintCallable)
