@@ -17,21 +17,21 @@ public:
 	// Sets default values for this component's properties
 	USInventoryComponent();
 
-	USInventoryComponent(TMap<Item, int> StartItems);
+	USInventoryComponent(TMap<ItemID, int> StartItems);
 
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-	TMap<Item, int> ItemContainer = TMap<Item, int>();
+	TMap<ItemID, int> ItemContainer = TMap<ItemID, int>();
 
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	void AddItem(Item item);
+	void AddItem(ItemID item);
 
-	void RemoveItem(Item item);
+	void RemoveItem(ItemID item);
 
-	bool HasItem(Item item);
+	bool HasItem(ItemID item);
 };

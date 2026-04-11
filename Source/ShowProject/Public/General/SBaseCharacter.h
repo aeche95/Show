@@ -11,7 +11,7 @@ class UAbilitySystemComponent;
 class USAttributeSet;
 class USGameplayAbility;
 
-UCLASS()
+UCLASS(Abstract)
 class SHOWPROJECT_API ASBaseCharacter : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
@@ -27,9 +27,6 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-	UPROPERTY()
-	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 
 	UPROPERTY()
 	TObjectPtr<USAttributeSet> AttributeSet;

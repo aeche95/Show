@@ -2,7 +2,7 @@
 
 
 #include "Components/SInteractionComponent.h"
-#include "Interfaces/SInteractionInterface.h"
+#include "Interfaces/SInteractable.h"
 
 // Sets default values for this component's properties
 USInteractionComponent::USInteractionComponent()
@@ -58,11 +58,11 @@ void USInteractionComponent::ServerInteract_Implementation()
 		AActor* HitActor = Hit.GetActor();
 		if (HitActor)
 		{
-			if (HitActor->Implements<USInteractionInterface>())
+			if (HitActor->Implements<USInteractable>())
 			{
 				APawn* MyPawn = Cast<APawn>(Owner);
 
-				ISInteractionInterface::Execute_Interact(HitActor, MyPawn);
+				ISInteractable::Execute_Interact(HitActor, MyPawn);
 				break;
 			}
 		}

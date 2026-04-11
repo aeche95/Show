@@ -32,13 +32,13 @@ protected:
 	TObjectPtr<UParticleSystemComponent> ParticleSystem;
 
 	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr <UParticleSystem> TriggerVFX;
+	TObjectPtr<UParticleSystem> TriggerVFX;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly);
-	float SphereRadius = 5.0;
+	float SphereRadius;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly);
-	float ProjectileSpeed = 10.0;
+	float ProjectileSpeed;
 
 	UFUNCTION()
 	virtual void OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& SweepResult);

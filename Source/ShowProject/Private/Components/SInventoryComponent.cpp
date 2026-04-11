@@ -13,7 +13,7 @@ USInventoryComponent::USInventoryComponent()
 	// ...
 }
 
-USInventoryComponent::USInventoryComponent(TMap<Item, int> StartItems)
+USInventoryComponent::USInventoryComponent(TMap<ItemID, int> StartItems)
 {
 	PrimaryComponentTick.bCanEverTick = false;
 
@@ -39,7 +39,7 @@ void USInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	// ...
 }
 
-void USInventoryComponent::AddItem(Item item)
+void USInventoryComponent::AddItem(ItemID item)
 {
 	if (ItemContainer.Contains(item))
 	{
@@ -51,7 +51,7 @@ void USInventoryComponent::AddItem(Item item)
 	}
 }
 
-void USInventoryComponent::RemoveItem(Item item)
+void USInventoryComponent::RemoveItem(ItemID item)
 {
 	if (ItemContainer.Contains(item))
 	{
@@ -66,7 +66,7 @@ void USInventoryComponent::RemoveItem(Item item)
 	}
 }
 
-bool USInventoryComponent::HasItem(Item item)
+bool USInventoryComponent::HasItem(ItemID item)
 {
 	return ItemContainer.Contains(item);
 }

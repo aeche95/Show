@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Interfaces/SInteractionInterface.h"
+#include "Interfaces/SInteractable.h"
 #include "STreasureChest.generated.h"
 
 class UStaticMeshComponent;
 
 UCLASS()
-class SHOWPROJECT_API ASTreasureChest : public AActor, public ISInteractionInterface
+class SHOWPROJECT_API ASTreasureChest : public AActor, public ISInteractable
 {
 	GENERATED_BODY()
 	

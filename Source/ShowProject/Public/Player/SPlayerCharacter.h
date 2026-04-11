@@ -75,6 +75,8 @@ protected:
 
 	virtual void OnRep_PlayerState() override;
 
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

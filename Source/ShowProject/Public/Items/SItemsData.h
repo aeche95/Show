@@ -11,7 +11,7 @@ enum ItemType
 
 };
 
-enum Item 
+enum ItemID
 {
 	HEALTH_POTION,
 	MANA_POTION

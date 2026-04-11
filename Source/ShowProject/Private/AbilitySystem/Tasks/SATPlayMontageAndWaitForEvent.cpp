@@ -5,9 +5,6 @@
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemGlobals.h"
 #include "Animation/AnimInstance.h"
-//#include "Characters/Abilities/GDAbilitySystemComponent.h"
-//#include "Characters/Abilities/GDGameplayAbility.h"
-//#include "GASDocumentation/GASDocumentation.h"
 #include "GameFramework/Character.h"
 
 USATPlayMontageAndWaitForEvent::USATPlayMontageAndWaitForEvent(const FObjectInitializer& ObjectInitializer)
@@ -81,12 +78,17 @@ void USATPlayMontageAndWaitForEvent::OnMontageEnded(UAnimMontage* Montage, bool 
 
 void USATPlayMontageAndWaitForEvent::OnGameplayEvent(FGameplayTag EventTag, const FGameplayEventData* Payload)
 {
+
 	if (ShouldBroadcastAbilityTaskDelegates())
 	{
 		FGameplayEventData TempData = *Payload;
 		TempData.EventTag = EventTag;
 
 		EventReceived.Broadcast(EventTag, TempData);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("Entered event but didn't fire correctly"));
 	}
 }
 

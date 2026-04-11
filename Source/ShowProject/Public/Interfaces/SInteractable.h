@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "SInteractionInterface.generated.h"
+#include "SInteractable.generated.h"
 
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI)
-class USInteractionInterface : public UInterface
+class USInteractable : public UInterface
 {
 	GENERATED_BODY()
 };
@@ -16,7 +16,7 @@ class USInteractionInterface : public UInterface
 /**
  * 
  */
-class SHOWPROJECT_API ISInteractionInterface
+class SHOWPROJECT_API ISInteractable
 {
 	GENERATED_BODY()
 

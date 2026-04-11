@@ -32,11 +32,11 @@ void ASPlayerController::SetupInputComponent()
     USInputComponent* SInputComponent = CastChecked<USInputComponent>(InputComponent);
     const FSGameplayTags& GameplayTags = FSGameplayTags::Get();
 
-    SInputComponent->BindAbilityAction(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
+    //SInputComponent->BindAbilityAction(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
 
-    SInputComponent->BindActionByTag(InputConfig, GameplayTags.Input_PrimaryAction, ETriggerEvent::Triggered, this, &ThisClass::OnPrimaryAction);
-    SInputComponent->BindActionByTag(InputConfig, GameplayTags.Input_SecondaryAction, ETriggerEvent::Triggered, this, &ThisClass::OnSecondaryAction);
-    SInputComponent->BindActionByTag(InputConfig, GameplayTags.Input_Pause, ETriggerEvent::Triggered, this, &ThisClass::OnPause);
+    SInputComponent->BindActionByTag(InputConfig, GameplayTags.Input_PrimaryAction, ETriggerEvent::Started, this, &ThisClass::OnPrimaryAction);
+    SInputComponent->BindActionByTag(InputConfig, GameplayTags.Input_SecondaryAction, ETriggerEvent::Started, this, &ThisClass::OnSecondaryAction);
+    SInputComponent->BindActionByTag(InputConfig, GameplayTags.Input_Pause, ETriggerEvent::Started, this, &ThisClass::OnPause);
 }
 
 void ASPlayerController::OnPossess(APawn* InPawn)

@@ -14,7 +14,7 @@ ASBaseCharacter::ASBaseCharacter()
 
 UAbilitySystemComponent* ASBaseCharacter::GetAbilitySystemComponent() const
 {
-	return AbilitySystemComponent;
+	return nullptr;
 }
 
 // Called when the game starts or when spawned
@@ -27,7 +27,7 @@ void ASBaseCharacter::BeginPlay()
 void ASBaseCharacter::AddCharacterAbilities()
 {
 	if (!HasAuthority()) return;
-	USAbilitySystemComponent* ASC = CastChecked<USAbilitySystemComponent>(AbilitySystemComponent);
+	USAbilitySystemComponent* ASC = CastChecked<USAbilitySystemComponent>(GetAbilitySystemComponent());
 	ASC->AddCharacterAbilities(StartupAbilities);
 }
 

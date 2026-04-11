@@ -17,7 +17,7 @@ class SHOWPROJECT_API USSendGameplayTagAnimNotify : public UAnimNotify
 
 public:
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GAS")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Events")
 	FGameplayTag EventTag;
 
 	virtual void Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference) override;

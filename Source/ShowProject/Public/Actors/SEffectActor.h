@@ -5,13 +5,13 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 
-#include "Interfaces/SInteractionInterface.h"
+#include "Interfaces/SInteractable.h"
 #include "SEffectActor.generated.h"
 
 class UGameplayEffect;
 
 UCLASS()
-class SHOWPROJECT_API ASEffectActor : public AActor , public ISInteractionInterface
+class SHOWPROJECT_API ASEffectActor : public AActor , public ISInteractable
 {
 	GENERATED_BODY()
 	

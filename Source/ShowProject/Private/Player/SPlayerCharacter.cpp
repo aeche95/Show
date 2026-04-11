@@ -46,6 +46,13 @@ void ASPlayerCharacter::OnRep_PlayerState()
 	InitAbilityActorInfo();
 }
 
+UAbilitySystemComponent* ASPlayerCharacter::GetAbilitySystemComponent() const
+{
+	ASPlayerState* SPlayerState = GetPlayerState<ASPlayerState>();
+	check(SPlayerState);
+	return SPlayerState->GetAbilitySystemComponent();
+}
+
 // Called when the game starts or when spawned
 void ASPlayerCharacter::BeginPlay()
 {
@@ -83,7 +90,6 @@ void ASPlayerCharacter::InitAbilityActorInfo()
 	ASPlayerState* SPlayerState = GetPlayerState<ASPlayerState>();
 	check(SPlayerState);
 	SPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(SPlayerState, this);
-	AbilitySystemComponent = SPlayerState->GetAbilitySystemComponent();
 	AttributeSet = SPlayerState->GetAttributeSet();
 }
 
@@ -142,20 +148,20 @@ void ASPlayerCharacter::Interact()
 
 void ASPlayerCharacter::PrimaryAttack()
 {
-	ensure(ProjectileClass);
+	/*ensure(ProjectileClass);
 	PlayAnimMontage(AttackAnim);
 
-	GetWorldTimerManager().SetTimer(TimerHandle_PrimaryAttack, this, &ASPlayerCharacter::PrimaryAttack_TimerElapsed, 0.2f);
+	GetWorldTimerManager().SetTimer(TimerHandle_PrimaryAttack, this, &ASPlayerCharacter::PrimaryAttack_TimerElapsed, 0.2f);*/
 }
 
 void ASPlayerCharacter::PrimaryAttack_TimerElapsed()
 {
-	SpawnProjectile(ProjectileClass);
+	/*SpawnProjectile(ProjectileClass);*/
 }
 
 void ASPlayerCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 {
-	FVector Location = GetMesh()->GetSocketLocation("Muzzle_01");
+	/*FVector Location = GetMesh()->GetSocketLocation("Muzzle_01");
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	SpawnParams.Instigator = this;
@@ -182,7 +188,7 @@ void ASPlayerCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 
 	FRotator ProjRotation = FRotationMatrix::MakeFromX(TraceEnd - Location).Rotator();
 	FTransform SpawnTransform = FTransform(ProjRotation, Location);
-	GetWorld()->SpawnActor<AActor>(ClassToSpawn, SpawnTransform, SpawnParams);
+	GetWorld()->SpawnActor<AActor>(ClassToSpawn, SpawnTransform, SpawnParams);*/
 }
 
 

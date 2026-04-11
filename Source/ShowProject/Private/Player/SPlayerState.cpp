@@ -36,7 +36,6 @@ void ASPlayerState::PostInitializeComponents()
 	Super::PostInitializeComponents();
 
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(USAttributeSet::GetHealthAttribute()).AddUObject(this, &ASPlayerState::OnHealthChanged);
-
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(USAttributeSet::GetManaAttribute()).AddUObject(this, &ASPlayerState::OnManaChanged);
 }
 void ASPlayerState::OnHealthChanged(const FOnAttributeChangeData& Data)
@@ -52,9 +51,11 @@ void ASPlayerState::OnManaChanged(const FOnAttributeChangeData& Data)
 void ASPlayerState::BeginPlay()
 {
 	Super::BeginPlay();
-
-	AbilitySystemComponent->InitAbilityActorInfo(this, GetPawn());
-	AbilitySystemComponent->AddCharacterAbilities(StartingAbilities);
+	if (HasAuthority())
+	{
+		AbilitySystemComponent->InitAbilityActorInfo(this, GetPawn());
+		AbilitySystemComponent->AddCharacterAbilities(StartingAbilities);
+	}
 }
 
 UAbilitySystemComponent* ASPlayerState::GetAbilitySystemComponent() const
