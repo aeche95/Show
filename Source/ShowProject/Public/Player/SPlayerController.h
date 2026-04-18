@@ -36,6 +36,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, meta=(AllowBlueprintPrivateAccess="true"))
 	TObjectPtr<UInputMappingContext> BaseMappingContext;
 
+	UPROPERTY()
+	bool bIsPaused;
+
 	virtual void SetupInputComponent() override;
 
 	virtual void OnPossess(APawn* Pawn) override;
@@ -57,6 +60,9 @@ protected:
 
 	UFUNCTION()
 	void OnPause();
+
+	UFUNCTION()
+	void OnToggleInventory();
 
 private:
 

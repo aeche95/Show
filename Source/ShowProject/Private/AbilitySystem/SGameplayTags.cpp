@@ -18,6 +18,7 @@ void FSGameplayTags::InitializeGameplayTags()
 	GameplayTags.Input_Pause = MAKETAG("Input.Pause");
 	GameplayTags.Input_PrimaryAction = MAKETAG("Input.PrimaryAction");
 	GameplayTags.Input_SecondaryAction = MAKETAG("Input.SecondaryAction");
+	GameplayTags.Input_Inventory = MAKETAG("Input.Inventory");
 
 	GameplayTags.Attributes_Primary_Health = MAKETAG("Attributes.Primary.Health");
 	GameplayTags.Attributes_Primary_MaxHealth = MAKETAG("Attributes.Primary.MaxHealth");

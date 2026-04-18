@@ -7,11 +7,6 @@
 #include "AbilitySystemComponent.h"
 #include "SAttributeSet.generated.h"
 
-#define CREATE_ATTRIBUTE(ClassName, AttributeName) \
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_##AttributeName##) \
-	FGameplayAttributeData ##AttributeName##;\
-	ATTRIBUTE_ACCESSORS_BASIC(ClassName, AttributeName);\
-
 /**
  * 
  */

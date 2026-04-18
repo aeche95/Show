@@ -4,6 +4,7 @@
 #include "Subsystems/SVMGameInstanceSubsystem.h"
 #include "MVVMGameSubsystem.h"
 #include "UI/MVVM/SPlayerHUDVM.h"
+#include "UI/MVVM/SInventoryVM.h"
 
 void USVMGameInstanceSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
@@ -19,6 +20,7 @@ void USVMGameInstanceSubsystem::RegisterViewModels()
 	const auto MVVMCollection = GetGameInstance()->GetSubsystem<UMVVMGameSubsystem>()->GetViewModelCollection();
 
 	AddViewModel(MVVMCollection, USPlayerHUDVM::StaticClass(), FName("HUDVM"));
+	AddViewModel(MVVMCollection, USInventoryVM::StaticClass(), FName("InventoryVM"));
 }
 
 void USVMGameInstanceSubsystem::AddViewModel(UMVVMViewModelCollectionObject* VMCollection, const TSubclassOf<class UMVVMViewModelBase>& ViewModelClass, FName ViewModelUniqueIdentifier)

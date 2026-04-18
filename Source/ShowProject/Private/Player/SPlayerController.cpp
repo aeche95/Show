@@ -37,6 +37,8 @@ void ASPlayerController::SetupInputComponent()
     SInputComponent->BindActionByTag(InputConfig, GameplayTags.Input_PrimaryAction, ETriggerEvent::Started, this, &ThisClass::OnPrimaryAction);
     SInputComponent->BindActionByTag(InputConfig, GameplayTags.Input_SecondaryAction, ETriggerEvent::Started, this, &ThisClass::OnSecondaryAction);
     SInputComponent->BindActionByTag(InputConfig, GameplayTags.Input_Pause, ETriggerEvent::Started, this, &ThisClass::OnPause);
+    SInputComponent->BindActionByTag(InputConfig, GameplayTags.Input_Inventory, ETriggerEvent::Started, this, &ThisClass::OnToggleInventory);
+
 }
 
 void ASPlayerController::OnPossess(APawn* InPawn)
@@ -88,7 +90,17 @@ void ASPlayerController::OnPause()
     ASHUD* Hud = GetHUD<ASHUD>();
     if (Hud)
     {
-        Hud->OnPause();
+        bIsPaused = !bIsPaused;
+        Hud->TogglePause(bIsPaused);
+    }
+}
+
+void ASPlayerController::OnToggleInventory()
+{
+    ASHUD* Hud = GetHUD<ASHUD>();
+    if (Hud)
+    {
+        Hud->ToggleInventory();
     }
 }
 

@@ -24,7 +24,7 @@ public:
 	TSubclassOf<ASProjectile> ProjectileClass;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attack")
-	TSubclassOf<UAnimMontage> AttackAnim;
+	TObjectPtr<UAnimMontage> AttackAnim;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attack")
 	FName SocketName;

@@ -17,5 +17,14 @@ class SHOWPROJECT_API ASHUD : public AHUD
 public:
 
 	UFUNCTION(BlueprintImplementableEvent)
-	void OnPause();
+	void TogglePause(bool IsPaused);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void ToggleInventory();
+
+protected:
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	bool bIsInventoryOpen;
 };
+

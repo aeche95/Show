@@ -8,7 +8,7 @@
 #include "SInventoryComponent.generated.h"
 
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS( ClassGroup=(Inventory), meta=(BlueprintSpawnableComponent) )
 class SHOWPROJECT_API USInventoryComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -20,6 +20,9 @@ public:
 	USInventoryComponent(TMap<ItemID, int> StartItems);
 
 protected:
+	UPROPERTY(Replicated)
+	int MaxCapacity;
+
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
@@ -33,5 +36,14 @@ public:
 
 	void RemoveItem(ItemID item);
 
-	bool HasItem(ItemID item);
+	bool HasItem(ItemID item); 
+	
+	UFUNCTION(BlueprintCallable)
+	int GetMaxCapacity() const { return MaxCapacity; } const
+	
+	UFUNCTION(BlueprintCallable)
+	int GetAvailableCapacity() { return MaxCapacity - ItemContainer.Num(); }
+
+	UFUNCTION()
+	void IncreaseMaxCapacity(int AmountToIncrease);
 };

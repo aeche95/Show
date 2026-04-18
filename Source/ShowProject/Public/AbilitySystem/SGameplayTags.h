@@ -24,6 +24,8 @@ public:
 	FGameplayTag Input_Pause;
 	FGameplayTag Input_PrimaryAction;
 	FGameplayTag Input_SecondaryAction;
+	FGameplayTag Input_Inventory;
+
 
 	FGameplayTag Attributes_Primary_Health;
 	FGameplayTag Attributes_Primary_MaxHealth;
